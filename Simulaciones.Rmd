@@ -1,0 +1,90 @@
+---
+title: "Simulaciones distancia y densidad"
+author: "P. Tomas Campos Böttges"
+date: "3/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Simulaciones
+- Genero una función en un espacio bidimensional de tamaño E, en donde tomo el punto de partida en negro y los siguientes en rojo.
+- Determino el rango de movimiento en una unidad espacial (1, 0 o -1)
+- Renombro cada punto una vez hecho el loop para que se mueva desde la posición anterior
+- Random Walk
+
+
+```{r}
+grid <- function(x, y, HR) {
+  points(x,y,pch=16,col="black",cex=1.2)
+  for (i in 1:HR) {
+    xi <- sample(c(1,0,-1),1) 
+    yi <- sample(c(1,0,-1),1) 
+    points(c(x, x+xi), c(y, y+yi), pch=16, cex=0.3, col= "blue") 
+    x <- x + xi
+    y <- y + yi
+    if (x>100 | x<0 | y>100 | y<0) break
+  } 
+}
+```
+
+Genero el espacio entre las jaulas de 10 unidades espaciales, cada una con un radio de atracción de 2 unidades espaciales.
+Las coordenadas de cada punto que forma la circunferencia es del tipo (x, y) donde “x” es el coseno (cos) de un ángulo (t) y “y” es el seno (sin) del mismo ángulo.
+
+```{r}
+t <- seq(0, 2*pi, length.out = 1000) ## Consideracion de la candidad de angulos entre 0 y 2pi (Queda mas bonito)
+ 
+radio <- 10
+ 
+a <- 20 ## origen circunferencia eje x
+b <- 50 ## origen circunferencia eje y
+ 
+x1 <- a + cos(t)*radio
+y1 <- b + sin(t)*radio
+
+c <- 50
+d <- 50
+
+x2 <- c + cos(t)*radio
+y2 <- d + sin(t)*radio
+
+e <- 70
+f <- 50
+
+x3 <- e + cos(t)*radio
+y3 <- f + sin(t)*radio
+```
+
+Realizo un gráfico para ver si hice todo bien.
+
+```{r}
+c1 <- data.frame(x1,y1)
+c2 <- data.frame(x2,y2)
+c3 <- data.frame(x3,y3)
+
+gg <- plot(0:100,0:100,asp = 1, type = "n", xlim = c(0, 100), ylim = c(0, 100), ann = F) + 
+  abline(v = seq(0, 100, 5), lty = 2, col = "gray50") + 
+  abline(h = seq(0, 100, 5), lty = 2, col = "gray50") + 
+  points(c1, type = "l", col = "red") + 
+  points(c2, type = "l", col = "red") + 
+  points(c3, type = "l", col = "red")
+for (j in 1:10) {
+  x <- runif(1,1,99); 
+  y <- runif(1,1,99); 
+  E <- 100
+  grid(x,y,HR) }
+```
+
+Corro una mini simulación.
+
+```{r}
+par(mfrow= c(1,1), mar= c(3,5,3,5))
+plot(0:100,0:100,type="n",xlab="UTM",ylab="UTM") 
+points(grid1,pch=3,col="red",cex=0.1) 
+for (j in 1:1) {
+  x <- runif(1,1,99); y <- runif(1,1,99); HR <- 100
+  Johnny_Walker(x,y,HR) }
+```
+
